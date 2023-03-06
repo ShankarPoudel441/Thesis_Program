@@ -17,17 +17,18 @@ def input_args():
     flags=vars(parser.parse_args())
     return flags
 
-def query_it(str1,client = InfluxDBClient(host="127.0.0.1", port=8086, database="lathrop")):
+def query_it(str1,client = InfluxDBClient(host="127.0.0.1", port=8086, database="mchenry_all")):
         x=client.query(str1)
         data = pd.DataFrame(x.get_points())
     #     data.time = pd.to_datetime(data.time)
         return data
 
-def query_betn(s_datetime,e_datetime,table="raw",client = InfluxDBClient(host="127.0.0.1", port=8086, database="lathrop")):
-    x = client.query(
-        f"select * from {table} where time>='{s_datetime}' and time<'{e_datetime}'"
-    )
+def query_betn(s_datetime,e_datetime,table="raw",client = InfluxDBClient(host="127.0.0.1", port=8086, database="mchenry_all")):
+    query=f"select * from {table} where time>='{s_datetime}' and time<'{e_datetime}'"
+    print(query)
+    x = client.query(query)
     data=pd.DataFrame(x.get_points())
+    print(len(data))
     data.time=pd.to_datetime(data.time)
     return data
 
@@ -45,7 +46,7 @@ if __name__=="__main__":
     print(location_in_time)
 
 
-    [save_raw(start,stop,passID,folder_location) for start,stop,passID in location_in_time]
+    [save_raw(start,stop,passID,folder_location) for start,stop,passID in location_in_time[:,:3]]
 
 
     

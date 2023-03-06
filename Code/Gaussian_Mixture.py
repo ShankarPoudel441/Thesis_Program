@@ -6,6 +6,7 @@ import pickle
 
 from pathlib import Path
 import os
+import yaml
 
 def input_args():
     parser=argparse.ArgumentParser()
@@ -40,6 +41,11 @@ def input_args():
     flags = vars(parser.parse_args())
     return flags
 
+def read_params(folder_location):
+    with open(folder_location/"params.yml","r") as fid:
+        d=yaml.safe_load(fid)
+    print(d["fundFreq"])
+    return d
 
 def data_ready_to_fit_test(power_df):
     # reshape Training Data
@@ -51,6 +57,7 @@ def data_ready_to_fit_test(power_df):
 def computeTotalPower(params, x):
     """x is a list of seven power coefficients"""
     """Compute total power from powerbands."""
+    print(x)
     fundFreq=params["fundFreq"]
     std=params["std"]
     mean=params["mean"]
@@ -69,7 +76,7 @@ def computeTotalPower(params, x):
         ** 2
     )
 
-    return np.array([(a*b+c)*d for a,b,c,d in zip(x,std,mean,f)])/1000000 
+    return np.sum([(a*b+c)*d for a,b,c,d in zip(x,std,mean,f)])/1000000 
 
 
 def get_the_renaming_of_cluster_by_sorting(model,predictions):
@@ -81,8 +88,9 @@ def get_the_renaming_of_cluster_by_sorting(model,predictions):
     # idx = N[:, 0].argsort()
 
     ## Using total power to sort
-    total_power_centers=[computeTotalPower(params,x) for x in model_means]
+    total_power_centers=np.array([computeTotalPower(params,x) for x in model_means])
     idx=total_power_centers.argsort()
+    print("total_power_centers",total_power_centers, "idxes", idx)
 
 
     conversion={k:v for k,v in zip(prev_id,idx)}
@@ -116,6 +124,7 @@ if __name__=="__main__":
     model_name=flags["MODEL_NAME"]
     params = flags["PARAMS"]
 
+    params=read_params(folder_location)
 
     if model_l:
         with open(folder_location/model_l/"model.pkl", 'rb') as f:

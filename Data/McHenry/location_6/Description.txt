@@ -1,0 +1,3 @@
+It is sub of location 2/4
+Removing of the boundry pass
+Removing pass 3 and 0 of  of location 4

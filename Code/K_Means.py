@@ -89,6 +89,14 @@ def sort_clusters(model):
     print(model.cluster_centers_)
     return model
 
+def sort_cluster_by_po(model):
+    """Sort clusters by power bands."""
+    N = model.cluster_centers_.copy()
+    idx=N.T[0].argsort()
+    model.cluster_centers_=N[idx]
+    print(model.cluster_centers_)
+    return model
+
 def data_ready_to_fit_test(power_df):
     # reshape Training Data
     x = power_df.to_dict("records")
@@ -128,6 +136,7 @@ if __name__=="__main__":
         model=KMeans(n_clusters=5,random_state=42)
         model.fit(np_array_train)
         model=sort_clusters(model)
+        # model=sort_cluster_by_po(model)
         if not os.path.exists(folder_location/model_name):
             os.makedirs(folder_location/model_name)
         with open(folder_location/model_name/"model.pkl",'wb') as f:
