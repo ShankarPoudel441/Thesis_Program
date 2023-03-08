@@ -1,0 +1,18 @@
+px.scatter(
+    data[(data["latitude"]!=0.000000)&
+         (data["latitude"]>=35.6700)&
+         (data["latitude"]<=35.6708)&
+         (data["longitude"]>=-96.66235)&
+         (data["longitude"]<=-96.66230)&
+         (data["passID"]>=114)&
+         (data["passID"]<125)&
+         (data["density_post"]>=90.1)
+                  ][["latitude","longitude","passID","density_post","time"]],
+    x="latitude",
+    y="longitude",
+    hover_name="passID", 
+    hover_data=["time", "density_post"],
+    color="density_post",
+    width=1000,
+    height=800
+)

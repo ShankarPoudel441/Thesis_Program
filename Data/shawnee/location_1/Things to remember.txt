@@ -1,0 +1,2 @@
+#### Things to look:
+	1. Pass 0 has larger prediction than pass 1 in KMEans
