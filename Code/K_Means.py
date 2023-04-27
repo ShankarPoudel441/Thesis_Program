@@ -46,29 +46,6 @@ def read_params(folder_location):
     print(d["fundFreq"])
     return d
 
-# def computeTotalPower(fundFreq, x):
-#     """Compute total power from powerbands."""
-#     f = (
-#         np.array(
-#             [
-#                 fundFreq,
-#                 2 * fundFreq,
-#                 3 * fundFreq,
-#                 4 * fundFreq,
-#                 5 * fundFreq,
-#                 6 * fundFreq,
-#                 7 * fundFreq,
-#             ]
-#         )
-#         ** 2
-#     )
-#     return {
-#         "total_power": np.matmul(
-#             f, 
-#         )
-#         / 1000000  # Divide by 1 million is from Paloma's experiments
-#     }
-
 def sort_clusters_by_total_power(model):
     """Order each cluster by sum"""
     N = model.cluster_centers_.copy()
